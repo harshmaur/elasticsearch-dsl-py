@@ -64,10 +64,11 @@ class FacetedSearch(object):
     fields = ('*', )
     facets = {}
 
-    def __init__(self, query=None, filters={}):
+    def __init__(self, query=None, filters={},facets={}):
         self._query = query
         self._raw_filters = {}
         self._filters = {}
+        self.facets=facets
         for name, value in iteritems(filters):
             self.add_filter(name, value)
 
@@ -79,10 +80,11 @@ class FacetedSearch(object):
 
         if not value:
             return
-
         agg = self.facets[name]
         f = agg_to_filter(agg, value[0])
+
         for v in value[1:]:
+            # agg.interval=k
             f |= agg_to_filter(agg, v)
         self._filters[name] = f
         self._raw_filters[name] = value
