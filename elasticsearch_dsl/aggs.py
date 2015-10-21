@@ -3,7 +3,7 @@ from .utils import DslBase, _make_dsl_class
 __all__ = [
     'A', 'Agg', 'Filter', 'Bucket', 'Children', 'DateHistogram', 'Filters',
     'GeoDistance', 'GeohashGrid', 'Global', 'Histogram', 'Iprange', 'Missing',
-    'Nested', 'Range', 'ReverseNested', 'SignificantTerms', 'Terms', 'Avg',
+    'Nested', 'Range', 'ReverseNested', 'SignificantTerms', 'Terms','Tscript', 'Avg',
     'Cardinality', 'ExtendedStats', 'GeoBounds', 'Max', 'Min', 'Percentiles',
     'PercenileRanks', 'ScriptedMetric', 'Stats', 'Sum', 'TopHits', 'ValueCount'
 ]
@@ -93,6 +93,8 @@ class Bucket(AggBase, Agg):
         d = super(AggBase, self).to_dict()
         if 'aggs' in d[self.name]:
             d['aggs'] = d[self.name].pop('aggs')
+        if 'tscript' in d.keys():
+            d={"terms":d[self.name]}
         return d
 
 class Filter(Bucket):
@@ -128,7 +130,7 @@ AGGS = (
     (Bucket, 'reverse_nested', None),
     (Bucket, 'significant_terms', None),
     (Bucket, 'terms', None),
-
+    (Bucket, 'tscript', None),
     (Agg, 'avg', None),
     (Agg, 'cardinality', None),
     (Agg, 'extended_stats', None),
