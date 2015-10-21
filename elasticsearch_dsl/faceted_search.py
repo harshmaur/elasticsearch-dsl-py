@@ -88,7 +88,11 @@ class FacetedSearch(object):
 		# 	print str(self.facets[name])
 
 		# agg = self.facets[name]
-		agg=Terms(field=name,min_doc_count=0, size=0)
+		a=str(self.facets[name])
+		if "Tscript" in a:
+			agg=Terms(field=name,min_doc_count=0, size=0)
+		else:
+			agg = self.facets[name]
 		f = agg_to_filter(agg, value[0])
 		
 		for v in value[1:]:
